@@ -77,18 +77,26 @@ def heatmap(dat, label):
 Countries_list = ["Australia", "Brazil", "China",
                   "United Kingdom", "India", "United States"]
 
+"""Reading CO2.csv file using read function and assigning
+the returned valuse to two variables"""
 CO2_data, CO2_data_transposed = read_data("CO2.csv")
+# filtering the years of the CO2_data
 CO2_data_transposed = CO2_data_transposed[30:51]
 
+"""Reading Urban Population.csv file using read function and assigning
+the returned valuse to two variables"""
 Urban_data, Urban_data_transposed = read_data("Urban Population.csv")
+# filtering the years of the Urban_data_transposed
 Urban_data_transposed = Urban_data_transposed[30:51]
 
-
+# Selecting the indicators to create a dataframe to plot heatmap
 indicators = ["Population, total", "Urban population", "CO2 emissions (kt)",
               "CO2 emissions from solid fuel consumption (kt)",
               "Methane emissions (kt of CO2 equivalent)",
               "Electricity production from coal sources (% of total)"]
 
+"""Reading All Data.csv file using read function and assigning
+the returned valuse to two variables"""
 All_data, All_data_transposed = read_data("All Data.csv")
 All_data_china = All_data[(All_data["Country Name"] == "China")]
 All_data_china = All_data_china.set_index("Indicator Name")
@@ -97,31 +105,36 @@ All_data_china_transposed = All_data_china_transposed.drop(
     index=["Country Name", "Country Code", "Indicator Code"])
 All_data_china_transposed = All_data_china_transposed[30:51]
 
+# Finding the mean of the rows using numpy functio to plot the pieplot
 Urban_data_transposed_mean = np.mean(Urban_data_transposed[Countries_list])
 
-
+"""Reading Methane.csv file using read function and assigning
+the returned valuse to two variables"""
 Methane_data, Methane_data_transpose = read_data("Methane.csv")
 Methane_data_transpose = Methane_data_transpose[30:51]
 Methane_data_transpose = Methane_data_transpose[["China", "United States"]]
 
-
+"""Reading Urban Population Growth file using read function and assigning
+the returned valuse to two variables"""
 Urb_popgr_data, Urb_popgr_data_transpose = read_data(
     "Urban Population Growth.csv")
 Urb_popgr_data_transpose_mean = np.mean(
     Urb_popgr_data_transpose[Countries_list])
 
+# calling lineplot function using CO2 Emission data
 lineplot(CO2_data_transposed, Countries_list,
          "CO\N{SUBSCRIPT TWO} Emission(kt)", "CO\N{SUBSCRIPT TWO}")
 
+# calling lineplot function using Urban Population data
 lineplot(Urban_data_transposed, Countries_list, "Urban Population", "UP")
 
+# calling barplot function using Methane Emission data
 barplot(Methane_data_transpose, "Methane Emission (kt)", "Methane")
 
+# calling correlation heatmap function using data of China
 heatmap(All_data_china_transposed, "china")
 
+# calling pieplot function using urban population growth data
 pieplot(Urb_popgr_data_transpose_mean,
         "Urban Population Growth of Different Countries(1990-2010)",
         "Urban population Growth")
-
-
-print(All_data_china_transposed.columns)
